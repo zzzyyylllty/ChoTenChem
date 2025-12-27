@@ -41,6 +41,7 @@ taboolib {
         install(BukkitNMSUtil)
         install(BukkitNMSItemTag)
         install(BukkitNMSEntityAI)
+        install(JavaScript)
     }
     description {
         name = "FancyNPCAdapt"
@@ -82,12 +83,15 @@ repositories {
     maven("https://repo.auxilor.io/repository/maven-public/")
     maven("https://repo.hibiscusmc.com/releases/")
     maven("https://repo.tabooproject.org/service/rest/repository/browse/releases/")
+    maven("https://repo.codemc.io/repository/maven-snapshots/")
+    maven("https://repo.codemc.io/repository/maven-releases/")
 }
 
 dependencies {
     compileOnly("ink.ptms.core:v12004:12004:mapped")
     compileOnly("ink.ptms.core:v12004:12004:universal")
     compileOnly("de.oliver:FancyNpcs:2.7.0")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.11.1")
     compileOnly("ink.ptms.chemdah:api:1.1.0")
     // compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT") { isTransitive = false }
     compileOnly(kotlin("stdlib"))
