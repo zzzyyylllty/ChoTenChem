@@ -18,6 +18,13 @@ class ChemdahQuestUtil(val quest: Quest) {
     fun getUncompletedTasks(p: PlayerProfile): LinkedHashMap<String, Task> {
         val tasks = LinkedHashMap<String, Task>()
         quest.tasks.forEach {
+            if (!it.isCompleted(p)) tasks[it.id] = it
+        }
+        return tasks
+    }
+    fun getCompletedTasks(p: PlayerProfile): LinkedHashMap<String, Task> {
+        val tasks = LinkedHashMap<String, Task>()
+        quest.tasks.forEach {
             if (it.isCompleted(p)) tasks[it.id] = it
         }
         return tasks

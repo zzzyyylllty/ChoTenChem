@@ -10,6 +10,7 @@ import io.github.zzzyyylllty.chotenchem.function.legacyToMiniMessage
 import io.github.zzzyyylllty.chotenchem.function.legacyToMiniMessageSp
 import io.github.zzzyyylllty.chotenchem.function.toLines
 import org.bukkit.entity.Player
+import taboolib.common.env.RuntimeDependency
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.info
 import taboolib.common.util.ResettableLazy
@@ -17,7 +18,10 @@ import taboolib.common.util.resettableLazy
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
 import kotlin.text.uppercase
-
+@RuntimeDependency(
+    value = "!com.google.code.gson:gson:2.10.1",
+    relocate = ["!com.google.gson", "!com.example.library.gson"]
+)
 object ChoTenChem : Plugin() {
 
     val boardMap: MutableMap<String, ScoreBoard> by lazy {

@@ -83,6 +83,7 @@ data class TaskLine(
                 Filter.SMART -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getSmartTasks(profile)
                 Filter.RESERVEDSMART -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getReservedSmartTasks(profile)
                 Filter.PROGRESS -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getUncompletedTasks(profile)
+                Filter.COMPLETED -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getCompletedTasks(profile)
             } ?: return null
         tasks.forEach { (key, value) ->
             value.buildText(text, p, quest, profile)?.let { content.addAll(it) }
@@ -95,7 +96,8 @@ enum class Filter {
     ALL,
     SMART,
     RESERVEDSMART,
-    PROGRESS
+    PROGRESS,
+    COMPLETED
 }
 
 fun Task.buildText(text: TaskStatText, player: Player, quest: Quest, profile: PlayerProfile): List<String>? {

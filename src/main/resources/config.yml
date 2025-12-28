@@ -39,9 +39,9 @@ scoreboard:
       # 任务3 - 未完成
       filter: all
 
-      completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
-      in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
-      no-progress: "&8#&e{id} &7{meta:name} &c未开始"
+      completed: "&8&m&o#{id} {meta:name}&r &a已完成"
+      in-progress: "&8#{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+      no-progress: "&8#{id} &7{meta:name} &c未开始"
 
     - type: text
       content: |
@@ -56,9 +56,9 @@ placeholders:
   # 例如 %chotenchem_task_ILoveChoTenChan_*taskaaa% - 获取子任务"taskaaa"
   task:
     filter: all
-    completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
-    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
-    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
+    completed: "&8&m&o#{id} {meta:name}&r &a已完成"
+    in-progress: "&8#{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#{id} &7{meta:name} &c未开始"
 
   # 智能任务解析
   # %chotenchem_smart-task_任务名称_当前项%，当前项必须为数字类型
@@ -75,9 +75,9 @@ placeholders:
   # %chotenchem_smart-task_ILoveChoTenChan_2% -> &7子任务3名称&r &a已完成
   smart-task:
     filter: smart
-    completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
-    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
-    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
+    completed: "&8&m&o#{id} {meta:name}&r &a已完成"
+    in-progress: "&8#{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#{id} &7{meta:name} &c未开始"
 
   # 未完成的任务解析
   # %chotenchem_task_任务名称_当前项%，当前项必须为数字类型
@@ -91,8 +91,8 @@ placeholders:
   uncompleted-task:
     filter: progress
     completed: " "
-    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
-    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
+    in-progress: "&8#{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#{id} &7{meta:name} &c未开始"
 
 
   # 自定义的任务解析
@@ -102,6 +102,6 @@ placeholders:
   # 例如 %chotenchem_custom-task_ILoveChoTenChan_taskaaa%
   custom-task:
     filter: all
-    completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
-    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
-    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
+    completed: "&8&m&o#{id} {meta:name}&r &a已完成"
+    in-progress: "&8#{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#{id} &7{meta:name} &c未开始"

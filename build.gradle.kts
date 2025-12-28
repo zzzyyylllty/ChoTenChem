@@ -58,7 +58,7 @@ taboolib {
     }
     relocate("top.maplex.arim","io.github.zzzyyylllty.chotenchem.library.arim")
     relocate("ink.ptms.um","io.github.zzzyyylllty.chotenchem.library.um")
-    relocate("com.google", "io.github.zzzyyylllty.chotenchem.library.google")
+//    relocate("com.google", "io.github.zzzyyylllty.chotenchem.library.google")
     relocate("com.alibaba", "io.github.zzzyyylllty.chotenchem.library.alibaba")
     relocate("kotlinx.serialization", "kotlinx.serialization170")
     // relocate("de.tr7zw.changeme.nbtapi","io.github.zzzyyylllty.chotenchem.library.nbtapi")

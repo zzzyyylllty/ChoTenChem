@@ -19,6 +19,7 @@ data class PapiSetting(
             Filter.SMART -> ChemdahPlayerUtil(player).getTracking()?.let { ChemdahQuestUtil(it) }?.getSmartTasks(profile)
             Filter.RESERVEDSMART -> ChemdahPlayerUtil(player).getTracking()?.let { ChemdahQuestUtil(it) }?.getReservedSmartTasks(profile)
             Filter.PROGRESS -> ChemdahPlayerUtil(player).getTracking()?.let { ChemdahQuestUtil(it) }?.getUncompletedTasks(profile)
+            Filter.COMPLETED -> ChemdahPlayerUtil(player).getTracking()?.let { ChemdahQuestUtil(it) }?.getCompletedTasks(profile)
         } ?: return null
         val task = tasks.getTaskInTasks(task)
         return task?.buildText(text, player ,quest, profile)?.joinToString("\n")
