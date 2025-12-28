@@ -8,6 +8,14 @@
 
 **本阿卡糖懒得写wiki，直接看代码吧**
 
+## 过滤器类型
+
+- 全部展示 ALL
+- 优先展示未完成 SMART
+- 优先展示已完成 RESERVEDSMART
+- 只展示未完成 PROGRESS
+- 只展示已完成 COMPLETED
+
 ## 额外 Papi
 
 * %chotenchem_格式化类型_任务名_任务条目[可选:_输出类型]% - 格式化任务条目，详见config
