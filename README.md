@@ -33,6 +33,11 @@
 * 覆盖追踪计分板 - 开发中
 * 新任务UI - 开发中
 
+## 输出类型
+
+* adventure - 转成minimessage格式
+* color/colored - 上色
+
 ## 构建发行版本 / 构建在游戏内运行的版本
 
 发行版本用于正常使用, 不含 TabooLib 本体。

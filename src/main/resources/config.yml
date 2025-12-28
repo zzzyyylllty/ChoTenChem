@@ -39,9 +39,9 @@ scoreboard:
       # 任务3 - 未完成
       filter: all
 
-      completed: "&e{id} &7{meta:name} - &a已完成"
-      in-progress: "&e{id} &7{meta:name} - &e{progress:1}/{target:1} &7({percent:1})"
-      no-progress: "&e{id} &7{meta:name} - &c未开始"
+      completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
+      in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+      no-progress: "&8#&e{id} &7{meta:name} &c未开始"
 
     - type: text
       content: |
@@ -56,9 +56,9 @@ placeholders:
   # 例如 %chotenchem_task_ILoveChoTenChan_*taskaaa% - 获取子任务"taskaaa"
   task:
     filter: all
-    completed: "&e{id} &7{meta:name} - &a已完成"
-    in-progress: "&e{id} &7{meta:name} - &e{progress:1}/{target:1} &7({percent:1})"
-    no-progress: "&e{id} &7{meta:name} - &c未开始"
+    completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
+    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
 
   # 智能任务解析
   # %chotenchem_smart-task_任务名称_当前项%，当前项必须为数字类型
@@ -69,30 +69,30 @@ placeholders:
   # 尤其是您希望将任务限制在部分计分板内的时候。
   # 示例如下:
   # 任务ILoveChoTenChan中，子任务1和3已完成，2正在进行，4还没有进展，那么展示的就是：
-  # %chotenchem_smart-task_ILoveChoTenChan_3% -> &7子任务2名称 - &e1/5, 20%
-  # %chotenchem_smart-task_ILoveChoTenChan_4% -> &7子任务4名称 - &c未开始
-  # %chotenchem_smart-task_ILoveChoTenChan_1% -> &7子任务1名称 - &a已完成
-  # %chotenchem_smart-task_ILoveChoTenChan_2% -> &7子任务3名称 - &a已完成
+  # %chotenchem_smart-task_ILoveChoTenChan_3% -> &7子任务2名称 &e1/5 &7(20%)
+  # %chotenchem_smart-task_ILoveChoTenChan_4% -> &7子任务4名称 &c未开始
+  # %chotenchem_smart-task_ILoveChoTenChan_1% -> &7子任务1名称&r &a已完成
+  # %chotenchem_smart-task_ILoveChoTenChan_2% -> &7子任务3名称&r &a已完成
   smart-task:
     filter: smart
-    completed: "&e{id} &7{meta:name} - &a已完成"
-    in-progress: "&e{id} &7{meta:name} - &e{progress:1}/{target:1} &7({percent:1})"
-    no-progress: "&e{id} &7{meta:name} - &c未开始"
+    completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
+    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
 
   # 未完成的任务解析
   # %chotenchem_task_任务名称_当前项%，当前项必须为数字类型
   # 任务名使用TRACKING代表使用追踪中的任务
   # 示例如下:
   # 任务ILoveChoTenChan中，子任务1和3已完成，2正在进行，4还没有进展，那么展示的就是：
-  # %chotenchem_uncompleted-task_ILoveChoTenChan_1% -> &7子任务2名称 - &e1/5,20%
-  # %chotenchem_uncompleted-task_ILoveChoTenChan_2% -> &7子任务4名称 - &c未开始
+  # %chotenchem_uncompleted-task_ILoveChoTenChan_1% -> &7子任务2名称 &e1/5 &7(20%)
+  # %chotenchem_uncompleted-task_ILoveChoTenChan_2% -> &7子任务4名称 &c未开始
   # %chotenchem_uncompleted-task_ILoveChoTenChan_3% -> (空字符串)
   # %chotenchem_uncompleted-task_ILoveChoTenChan_4% -> (空字符串)
   uncompleted-task:
     filter: progress
     completed: " "
-    in-progress: "&e{id} &7{meta:name} - &e{progress:1}/{target:1} &7({percent:1})"
-    no-progress: "&e{id} &7{meta:name} - &c未开始"
+    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
 
 
   # 自定义的任务解析
@@ -102,6 +102,6 @@ placeholders:
   # 例如 %chotenchem_custom-task_ILoveChoTenChan_taskaaa%
   custom-task:
     filter: all
-    completed: "&e{id} &7{meta:name} - &a已完成"
-    in-progress: "&e{id} &7{meta:name} - &e{progress:1}/{target:1} &7({percent:1})"
-    no-progress: "&e{id} &7{meta:name} - &c未开始"
+    completed: "&8#&e{id} &m&7{meta:name}&r &a已完成"
+    in-progress: "&8#&e{id} &7{meta:name} &e{progress:1}/{target:1} &7({percent:1}%)"
+    no-progress: "&8#&e{id} &7{meta:name} &c未开始"
