@@ -1,5 +1,6 @@
 package io.github.zzzyyylllty.chotenchem.function
 
+import ink.ptms.chemdah.Chemdah
 import ink.ptms.chemdah.api.ChemdahAPI
 import ink.ptms.chemdah.core.PlayerProfile
 import ink.ptms.chemdah.core.quest.Quest
@@ -10,13 +11,13 @@ import org.bukkit.entity.Player
 
 class ChemdahPlayerUtil(val p: Player) {
     fun getQuest(quest: String): Quest? {
-        return ChemdahAPI.playerProfile[p.name]?.getQuestById(quest)
+        return Chemdah.api.playerProfile[p.name]?.getQuestById(quest)
     }
     fun getTracking(): Quest? {
-        return ChemdahAPI.playerProfile[p.name]?.trackQuestId?.let { getQuest(it) }
+        return Chemdah.api.playerProfile[p.name]?.trackQuestId?.let { getQuest(it) }
     }
     fun getProfile(): PlayerProfile? {
-        return ChemdahAPI.playerProfile[p.name]
+        return Chemdah.api.playerProfile[p.name]
     }
     fun getScoreBoardSetting(): ScoreBoardSettings {
         return defaultScoreboardSetting.value

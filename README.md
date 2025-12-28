@@ -2,11 +2,26 @@
 
 超天集团属 Chemdah 拓展插件
 
+支持 1.21.4+ Paper
+
+考虑到低版本有龙核，不太考虑兼容低版本...<s>除非打钱</s>
+
+**本阿卡糖懒得写wiki，直接看代码吧**
+
 ## 额外 Papi
 
 * %chotenchem_格式化类型_任务名_任务条目[可选:_输出类型]% - 格式化任务条目，详见config
 * %chotenchem_questmeta_任务名[可选:_输出类型]% - 获取任务的 Meta
 * %chotenchem_meta_任务名_条目[可选:_输出类型]% - 获取任务条目的 Meta
+
+提示: 任务名为 TRACKING 则获取正在追踪的任务
+
+注意:默认情况下获取任务条目为第X项。如果你要获取固定的任务条目，请使用*taskid。
+
+例如：
+
+* %chotenchem_task_ILoveChoTeN_10% - 所有任务条目转为列表，获取第10项。(从1起数)
+* %chotenchem_task_ILoveChoTeN_*10% - 获取名称为"10"的任务条目
 
 ## 额外 Kether
 

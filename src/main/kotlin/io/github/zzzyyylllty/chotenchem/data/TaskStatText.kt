@@ -20,19 +20,14 @@ data class TaskStatText(
     fun build(player: Player, quest: Quest, task: Task, profile: PlayerProfile): List<String>? {
         val texts =
             if (task.isCompleted(profile)) completed
-            else if (task.getProgress(profile).get().isZero()) noProgress
+            else if (task.objective.getProgress(profile, task).percent == 0.0) noProgress
             else inProgress
-        val json = jsonUtils.toJson(texts).replacePlaceholder(player)
-        val parsed = parseQuestPlaceholders(json, player, quest, task, profile)
+        val json = jsonUtils.toJson(texts)
+        val parsed = parseQuestPlaceholders(json, player, quest, task, profile).replacePlaceholder(player)
         return jsonUtils.fromJson<List<String>>(parsed, List::class.java)
     }
 }
 
-fun Any.isZero(): Boolean {
-    return if (this is Number) this.toDouble() == 0.0
-    else if (this is String) this.toDouble() == 0.0
-    else false
-}
 
 fun parseQuestPlaceholders(json: String, player: Player, quest: Quest, task: Task, profile: PlayerProfile): String {
     var json = json
@@ -114,13 +109,15 @@ fun solvePlaceholders(str: String, player: Player, quest: Quest, task: Task, pro
             "meta" -> meta.value?.let { task.meta<Meta<String>>(it)?.source }
             "quest_meta" -> meta.value?.let { quest.template.metaMap[it]?.source.toString() }
             "value" -> meta.value
+            "id" -> task.id
+            "quest_id" -> quest.id
             "kether" -> meta.value?.evalKetherString(
                 player,
                 mapOf("@QuestSelected" to quest.id)
             )
-            "progress" -> task.getProgress(profile).get().value.toString().removeSuffix(".0")
-            "target" -> task.getProgress(profile).get().target.toString().removeSuffix(".0")
-            "percent" -> task.getProgress(profile).get().percent.toString().removeSuffix(".0")
+            "progress" -> task.objective.getProgress(profile, task).value.toString().toDouble().roundTo(meta.value?.toInt() ?: 1).toString().removeSuffix(".0")
+            "target" -> task.objective.getProgress(profile, task).target.toString().toDouble().roundTo(meta.value?.toInt() ?: 1).toString().removeSuffix(".0")
+            "percent" -> (task.objective.getProgress(profile, task).percent*100).roundTo(meta.value?.toInt() ?: 1).toString().removeSuffix(".0")
             else -> null
         } ?: meta.value
 
@@ -128,4 +125,11 @@ fun solvePlaceholders(str: String, player: Player, quest: Quest, task: Task, pro
     }
 
     return map
+}
+
+
+fun Double.roundTo(decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return kotlin.math.round(this * multiplier) / multiplier
 }

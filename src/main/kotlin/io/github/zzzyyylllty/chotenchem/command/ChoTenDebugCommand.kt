@@ -1,6 +1,7 @@
 package io.github.zzzyyylllty.chotenchem.command
 
 import io.github.zzzyyylllty.chotenchem.ChoTenChem.defaultScoreboardSetting
+import io.github.zzzyyylllty.chotenchem.ChoTenChem.papiSetting
 import io.github.zzzyyylllty.chotenchem.function.ScoreboardUtil.addBoard
 import io.github.zzzyyylllty.chotenchem.function.ScoreboardUtil.removeBoard
 import io.github.zzzyyylllty.chotenchem.function.ScoreboardUtil.updateBoard
@@ -70,12 +71,15 @@ object ChoTenDebugCommand {
 
     @CommandBody
     val defaultSettings = subCommand {
-            execute<CommandSender> { sender, context, argument ->
-                val user = context.player("user")
-                // 转化为Bukkit的Player
-                val player = user.castSafely<Player>()
-                player?.sendComponent(defaultScoreboardSetting.toString())
-            }
+        execute<CommandSender> { sender, context, argument ->
+            sender.sendComponent(defaultScoreboardSetting.value.toString())
+        }
+    }
+    @CommandBody
+    val papiSettings = subCommand {
+        execute<CommandSender> { sender, context, argument ->
+            sender.sendComponent(papiSetting.value.toString())
+        }
     }
 
 }

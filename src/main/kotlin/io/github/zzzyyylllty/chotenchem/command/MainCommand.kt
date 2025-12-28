@@ -31,7 +31,7 @@ object MainCommand {
     @CommandBody
     val about = subCommand {
         execute<CommandSender> { sender, context, argument -> //
-            sender.sendComponent("<gradient:aqua:yellow>ChoTenTech</gradient> <#ccccff>$pluginVersion")
+            sender.sendComponent("<gradient:#00ffd6:#00bb66>ChoTenChem</gradient> <#ccccff>$pluginVersion")
             sender.sendComponent("<gradient:#6600ff:#aa00aa>Running on:</gradient> <light_purple>${runningPlatform.name} - $minecraftVersion")
             sender.sendComponent("<#660099>Plugin by AkaCandyKAngel.")
         }
@@ -47,6 +47,7 @@ object MainCommand {
             } catch (e: Exception) {
                 sender.sendComponent("<red>Error thrown. check console for info.</red>")
                 sender.sendComponent("<red>$e</red>")
+                e.printStackTrace()
             }
         }
     }

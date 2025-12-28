@@ -23,12 +23,13 @@ class ChemdahQuestUtil(val quest: Quest) {
         return tasks
     }
     fun getSmartTasks(p: PlayerProfile): LinkedHashMap<String, Task> {
-        val (uncompleted, completed) = quest.tasks.partition { !it.isCompleted(p) }
-
-        return (uncompleted + completed)
+        return quest.tasks
+            .sortedWith(compareBy { it.isCompleted(p) })  // false 排在 true 前面
             .associateByTo(LinkedHashMap()) { it.id }
     }
-    fun getTask(id: String): Task? {
-        return quest.getTask(id)
+    fun getReservedSmartTasks(p: PlayerProfile): LinkedHashMap<String, Task> {
+        return quest.tasks
+            .sortedWith(compareBy { !it.isCompleted(p) })  // false 排在 true 前面
+            .associateByTo(LinkedHashMap()) { it.id }
     }
 }

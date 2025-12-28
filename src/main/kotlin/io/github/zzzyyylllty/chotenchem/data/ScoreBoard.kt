@@ -81,6 +81,7 @@ data class TaskLine(
             when (filter) {
                 Filter.ALL -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getTasks()
                 Filter.SMART -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getSmartTasks(profile)
+                Filter.RESERVEDSMART -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getReservedSmartTasks(profile)
                 Filter.PROGRESS -> ChemdahPlayerUtil(p).getTracking()?.let { ChemdahQuestUtil(it) }?.getUncompletedTasks(profile)
             } ?: return null
         tasks.forEach { (key, value) ->
@@ -93,6 +94,7 @@ data class TaskLine(
 enum class Filter {
     ALL,
     SMART,
+    RESERVEDSMART,
     PROGRESS
 }
 

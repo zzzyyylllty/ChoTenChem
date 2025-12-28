@@ -58,6 +58,7 @@ object ChoTenChem : Plugin() {
     lateinit var config: Configuration
 
     fun reloadChoTenChem() {
+        config.reload()
         ResettableLazy.reset("config")
     }
 
