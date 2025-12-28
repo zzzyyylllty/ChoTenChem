@@ -1,0 +1,122 @@
+package io.github.zzzyyylllty.chotenchem.function
+
+import net.kyori.adventure.text.Component
+import taboolib.common.platform.function.info
+
+fun List<String?>.legacyToMiniMessage(): List<String?> {
+    val list = mutableListOf<String>()
+    this.forEach {
+        it?.legacyToMiniMessage()?.let {
+            element -> list.add(element)
+        }
+    }
+    return list
+}
+fun List<Map<*,*>?>.legacyToMiniMessageSp(): List<Map<String, String>?> {
+    val list = mutableListOf<Map<String, String>?>()
+    this.forEach {
+        it?.legacyToMiniMessage()?.let { list.add(it) }
+    }
+    return list
+}
+fun Map<*,*>.legacyToMiniMessage(): Map<String, String> {
+    val map = LinkedHashMap<String, String>()
+    this.forEach {
+        map[it.key.toString()] = it.value.toString().legacyToMiniMessage()
+    }
+    return map
+}
+fun String.legacyToMiniMessage(): String {
+    var text = this
+
+    // 1. 先处理 Hex 颜色代码 - 旧版 &x&6&6&c&c&f&f
+    // 匹配形式：&x&6&6&c&c&f&f （固定6个16进制字符）
+    val legacyHexPattern = Regex("&x((&[0-9a-fA-F]){6})")
+    text = legacyHexPattern.replace(text) { matchResult ->
+        if (isInsidePlaceholder(text, matchResult.range)) {
+            matchResult.value
+        } else {
+            val hexChars = matchResult.groupValues[1].chunked(2).joinToString("") { it.substring(1) }
+            "<#$hexChars>"
+        }
+    }
+
+    // 2. 处理现代形式的 Hex Hex代码：&#66ccff 或 &#ABCDEF
+    val modernHexPattern = Regex("&#([0-9a-fA-F]{6})")
+    text = modernHexPattern.replace(text) { matchResult ->
+        if (isInsidePlaceholder(text, matchResult.range)) {
+            matchResult.value
+        } else {
+            "<#${matchResult.groupValues[1].lowercase()}>"
+        }
+    }
+
+    // 3. 处理颜色代码（旧版，无大小写敏感）
+    val colorMap = mapOf(
+        '0' to "<black>",
+        '1' to "<dark_blue>",
+        '2' to "<dark_green>",
+        '3' to "<dark_aqua>",
+        '4' to "<dark_red>",
+        '5' to "<dark_purple>",
+        '6' to "<gold>",
+        '7' to "<gray>",
+        '8' to "<dark_gray>",
+        '9' to "<blue>",
+        'a' to "<green>",
+        'b' to "<aqua>",
+        'c' to "<red>",
+        'd' to "<light_purple>",
+        'e' to "<yellow>",
+        'f' to "<white>"
+    )
+
+    for ((code, tag) in colorMap) {
+        val pattern = Regex("[&§]$code", RegexOption.IGNORE_CASE)
+        text = pattern.replace(text) { matchResult ->
+            if (isInsidePlaceholder(text, matchResult.range)) {
+                matchResult.value
+            } else {
+                tag
+            }
+        }
+    }
+
+    // 4. 处理格式代码
+    val formatMap = mapOf(
+        'k' to "<obfuscated>",
+        'l' to "<bold>",
+        'm' to "<strikethrough>",
+        'n' to "<underlined>",
+        'o' to "<italic>"
+    )
+
+    for ((code, tag) in formatMap) {
+        val pattern = Regex("[&§]$code", RegexOption.IGNORE_CASE)
+        text = pattern.replace(text) { matchResult ->
+            if (isInsidePlaceholder(text, matchResult.range)) {
+                matchResult.value
+            } else {
+                tag
+            }
+        }
+    }
+
+    // 5. 处理重置代码
+    text = Regex("[&§]r", RegexOption.IGNORE_CASE).replace(text) { matchResult ->
+        if (isInsidePlaceholder(text, matchResult.range)) {
+            matchResult.value
+        } else {
+            "<reset>"
+        }
+    }
+
+    return text
+}
+
+fun isInsidePlaceholder(text: String, range: IntRange): Boolean {
+    val start = text.lastIndexOf("{", range.first)
+    val end = text.indexOf("}", range.last)
+
+    return start != -1 && end != -1 && start < range.first && end > range.last
+}

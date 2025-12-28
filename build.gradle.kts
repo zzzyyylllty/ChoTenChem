@@ -39,6 +39,7 @@ taboolib {
         install(BukkitUtil)
         install(BukkitNMS)
         install(BukkitNMSUtil)
+        install(BukkitNMSDataSerializer)
         install(BukkitNMSItemTag)
         install(BukkitNMSEntityAI)
         install(JavaScript)
@@ -54,6 +55,22 @@ taboolib {
         taboolib = "6.2.3-20d868d"
         coroutines = "1.8.1"
     }
+    relocate("top.maplex.arim","io.github.zzzyyylllty.chotenchem.library.arim")
+    relocate("ink.ptms.um","io.github.zzzyyylllty.chotenchem.library.um")
+    // relocate("com.google", "io.github.zzzyyylllty.chotenchem.library.google")
+    relocate("com.alibaba", "io.github.zzzyyylllty.chotenchem.library.alibaba")
+    relocate("kotlinx.serialization", "kotlinx.serialization170")
+    // relocate("de.tr7zw.changeme.nbtapi","io.github.zzzyyylllty.chotenchem.library.nbtapi")
+    relocate("io.github.projectunified.uniitem","io.github.zzzyyylllty.chotenchem.library.uniitem")
+    relocate("com.fasterxml.jackson","io.github.zzzyyylllty.chotenchem.library.jackson")
+    relocate("com.mojang.datafixers","io.github.zzzyyylllty.chotenchem.library.datafixers")
+    relocate("io.netty.handler.codec.http", "io.github.zzzyyylllty.chotenchem.library.http")
+    relocate("io.netty.handler.codec.rtsp", "io.github.zzzyyylllty.chotenchem.library.rtsp")
+    relocate("io.netty.handler.codec.spdy", "io.github.zzzyyylllty.chotenchem.library.spdy")
+    relocate("io.netty.handler.codec.http2", "io.github.zzzyyylllty.chotenchem.library.http2")
+    relocate("org.tabooproject.fluxon","io.github.zzzyyylllty.chotenchem.library.fluxon")
+    relocate("com.github.benmanes.caffeine","io.github.zzzyyylllty.chotenchem.library.caffeine")
+    relocate("org.kotlincrypto","io.github.zzzyyylllty.chotenchem.library.kotlincrypto")
 }
 repositories {
     mavenCentral()
@@ -92,6 +109,12 @@ dependencies {
     compileOnly("ink.ptms.core:v12004:12004:universal")
     compileOnly("de.oliver:FancyNpcs:2.7.0")
     compileOnly("com.github.retrooper:packetevents-spigot:2.11.1")
+    implementation("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT") { isTransitive = false }
+    implementation("net.kyori:adventure-text-serializer-legacy:4.19.0")
+    implementation("net.kyori:adventure-text-serializer-gson:4.19.0")
+    implementation("net.kyori:adventure-api:4.19.0")
+    implementation("net.kyori:adventure-text-minimessage:4.19.0")
+    compileOnly("com.google.code.gson:gson:2.10.1")
     compileOnly("ink.ptms.chemdah:api:1.1.0")
     // compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT") { isTransitive = false }
     compileOnly(kotlin("stdlib"))

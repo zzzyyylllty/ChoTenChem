@@ -1,6 +1,6 @@
 features:
 
-  # 为 Chemdah 启用 FancyNPC 拓展
+  # 为 Chemdah 启用 FancyNPC 支持
   fancynpc-support: false
 
 # 占位符更新周期，重启生效
@@ -8,22 +8,10 @@ placeholder-update: 40
 
 # ChoTenChem 提供的追踪计分板
 # 使用时请禁用原版任务追踪的计分板选项，你可以使用VSCode批量替换启用计分板的选项
-# 使用时请禁用原版任务追踪的计分板选项，你可以使用VSCode批量替换启用计分板的选项
-# 使用时请禁用原版任务追踪的计分板选项，你可以使用VSCode批量替换启用计分板的选项
 scoreboard:
 
   # 计分板更新周期，重启生效
   update: 40
-
-  # 启用 TabooLib 文本组件
-  simple-component: false
-
-  # 启用 Adventure 文本组件
-  adventure-component: false
-
-  # 使用 PacketEvents 插件发送计分板，而不是 TabooLib 的 NMS。
-  # **可能** 可以修复一些问题，推荐开启。理所当然，需要 PacketEvents 插件。
-  packetevents: false
 
   title: "ChoTenChem 任务追踪"
 
@@ -44,22 +32,23 @@ scoreboard:
       # progress_only - 只展示进行中的任务
       filter: all
 
-      completed: "&7<meta:name> - &a已完成"
-      in-progress: "&7<meta:name> - &e<progress:value>/<progress:target>,<progress:percent>%"
-      no-progress: "&7<meta:name> - &c未开始"
+      completed: "&7{meta:name} - &a已完成"
+      in-progress: "&7{meta:name} - &e{progress:value}/{progress:target},{progress:percent}%"
+      no-progress: "&7{meta:name} - &c未开始"
 
     - type: text
       content: |
         &7====
 
 placeholders:
+
   # 任务解析
-  # %chotenchem_smart-task_任务名称_子任务%
-  # 例如 %chotenchem_smart-task_ILoveChoTenChan_taskaaa%
+  # %chotenchem_task_任务名称_子任务%
+  # 例如 %chotenchem_task_ILoveChoTenChan_taskaaa%
   task:
-    completed: "&7<meta:name> - &a已完成"
-    in-progress: "&7<meta:name> - &e<progress:value>/<progress:target>,<progress:percent>%"
-    no-progress: "&7<meta:name> - &c未开始"i
+    completed: "&7{meta:name} - &a已完成"
+    in-progress: "&7{meta:name} - &e{progress:value}/{progress:target},{progress:percent}%"
+    no-progress: "&7{meta:name} - &c未开始"
 
   # 智能任务解析
   # %chotenchem_smart-task_任务名称_当前项%
@@ -69,11 +58,11 @@ placeholders:
   # 尤其是您希望将任务限制在部分计分板内的时候。
   # 示例如下:
   # 任务ILoveChoTenChan中，子任务1和3已完成，2正在进行，4还没有进展，那么展示的就是：
-  # %chotenchem_smart-task_ILoveChoTenChan_1% -> &7子任务1名称 - &a已完成
-  # %chotenchem_smart-task_ILoveChoTenChan_2% -> &7子任务3名称 - &a已完成
-  # %chotenchem_smart-task_ILoveChoTenChan_3% -> &7子任务2名称 - &e1/5,20%
-  # %chotenchem_smart-task_ILoveChoTenChan_4% -> &7子任务4名称 - &c未开始
+  # %chotenchem_smart-task_ILoveChoTenChan_1% -} &7子任务1名称 - &a已完成
+  # %chotenchem_smart-task_ILoveChoTenChan_2% -} &7子任务3名称 - &a已完成
+  # %chotenchem_smart-task_ILoveChoTenChan_3% -} &7子任务2名称 - &e1/5,20%
+  # %chotenchem_smart-task_ILoveChoTenChan_4% -} &7子任务4名称 - &c未开始
   smart-task:
-    completed: "&7<meta:name> - &a已完成"
-    in-progress: "&7<meta:name> - &e<progress:value>/<progress:target>,<progress:percent>%"
-    no-progress: "&7<meta:name> - &c未开始"
+    completed: "&7{meta:name} - &a已完成"
+    in-progress: "&7{meta:name} - &e{progress:value}/{progress:target},{progress:percent}%"
+    no-progress: "&7{meta:name} - &c未开始"

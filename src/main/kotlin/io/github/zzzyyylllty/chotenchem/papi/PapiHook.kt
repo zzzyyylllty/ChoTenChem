@@ -1,12 +1,5 @@
 package io.github.zzzyyylllty.chotenchem.papi
-import io.github.zzzyyylllty.chotentech.ChoTenTech.config
-import io.github.zzzyyylllty.chotentech.ChoTenTech.playerHudMap
-import io.github.zzzyyylllty.chotentech.data.ChoTenDataHelper
-import io.github.zzzyyylllty.chotentech.data.HUDManager
-import io.github.zzzyyylllty.chotentech.data.PlayerData
-import io.github.zzzyyylllty.chotentech.data.PlayerDataManager
-import io.github.zzzyyylllty.chotentech.data.getData
-import io.github.zzzyyylllty.chotentech.util.replacePlaceholderSafety
+
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import taboolib.platform.compat.PlaceholderExpansion
