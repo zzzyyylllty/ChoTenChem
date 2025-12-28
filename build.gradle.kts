@@ -42,11 +42,12 @@ taboolib {
         install(BukkitNMSDataSerializer)
         install(BukkitNMSItemTag)
         install(BukkitNMSEntityAI)
+        install(Kether)
         install(JavaScript)
     }
     description {
-        name = "FancyNPCAdapt"
-        desc("Chemdah FancyNPC Adapt.")
+        name = "ChoTenChem"
+        desc("Chemdah Expansion.")
         contributors {
             name("AkaCandyKAngel")
         }
@@ -105,8 +106,6 @@ repositories {
 }
 
 dependencies {
-    compileOnly("ink.ptms.core:v12004:12004:mapped")
-    compileOnly("ink.ptms.core:v12004:12004:universal")
     compileOnly("de.oliver:FancyNpcs:2.7.0")
     compileOnly("com.github.retrooper:packetevents-spigot:2.11.1")
     implementation("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT") { isTransitive = false }
@@ -115,7 +114,7 @@ dependencies {
     implementation("net.kyori:adventure-api:4.19.0")
     implementation("net.kyori:adventure-text-minimessage:4.19.0")
     compileOnly("com.google.code.gson:gson:2.10.1")
-    compileOnly("ink.ptms.chemdah:api:1.1.0")
+    compileOnly("ink.ptms.chemdah:api:1.1.17")
     // compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT") { isTransitive = false }
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))

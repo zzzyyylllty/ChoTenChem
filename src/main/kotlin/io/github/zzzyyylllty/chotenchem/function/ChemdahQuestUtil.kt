@@ -22,4 +22,13 @@ class ChemdahQuestUtil(val quest: Quest) {
         }
         return tasks
     }
+    fun getSmartTasks(p: PlayerProfile): LinkedHashMap<String, Task> {
+        val (uncompleted, completed) = quest.tasks.partition { !it.isCompleted(p) }
+
+        return (uncompleted + completed)
+            .associateByTo(LinkedHashMap()) { it.id }
+    }
+    fun getTask(id: String): Task? {
+        return quest.getTask(id)
+    }
 }

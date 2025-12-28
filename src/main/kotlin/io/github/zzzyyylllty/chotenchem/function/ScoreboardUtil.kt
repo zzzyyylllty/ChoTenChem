@@ -10,14 +10,40 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSc
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateScore
 import io.github.retrooper.packetevents.adventure.serializer.gson.GsonComponentSerializer
 import io.github.zzzyyylllty.chotenchem.ChoTenChem.boardMap
+import io.github.zzzyyylllty.chotenchem.ChoTenChem.config
 import io.github.zzzyyylllty.chotenchem.data.ScoreBoard
+import io.github.zzzyyylllty.chotenchem.data.ScoreBoardSettings
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerQuitEvent
+import taboolib.common.platform.event.EventPriority
+import taboolib.common.platform.event.SubscribeEvent
+import taboolib.common.platform.function.submitAsync
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
 
 
-class ScoreboardUtil {
+object ScoreboardUtil {
 
+    @SubscribeEvent(priority = EventPriority.MONITOR)
+    fun onBoardJoin(event: PlayerJoinEvent) {
+        val player = event.getPlayer()
+//        if (!isScoreboardEnabled(player)) return
+        submitAsync {
+            if (config.getBoolean("features.scoreboard", false)) return@submitAsync
+            Thread.sleep(5000)
+            addBoard(player)
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.MONITOR)
+    fun onBoardQuit(event: PlayerQuitEvent) {
+        val player = event.getPlayer()
+        submitAsync {
+            if (config.getBoolean("features.scoreboard", false)) return@submitAsync
+            Thread.sleep(5000)
+            removeBoard(player)
+        }
+    }
 
     fun sendScoreBoard(p: Player, scoreBoard: ScoreBoard) {
 
@@ -79,6 +105,50 @@ class ScoreboardUtil {
         board.lock = false
     }
 
+
+    fun getBoard(player: Player): ScoreBoard? {
+        return boardMap[player.uniqueId.toString()]
+    }
+
+    fun hasBoard(player: Player): Boolean {
+        return getBoard(player) != null
+    }
+
+    fun addBoard(player: Player) {
+        val boardConfig = ChemdahPlayerUtil(player).getScoreBoardSetting()
+
+        buildBoard(player, boardConfig)
+    }
+
+    fun buildBoard(player: Player, boardConfig: ScoreBoardSettings) {
+        if (hasBoard(player)) return
+
+        val quest = ChemdahPlayerUtil(player).getTracking()
+        val profile = ChemdahPlayerUtil(player).getProfile()
+
+        quest?.let { profile?.let { it1 -> boardMap[player.uniqueId.toString()] = boardConfig.build(player, it, it1) } }
+    }
+
+    fun removeBoard(player: Player) {
+        val board: ScoreBoard = boardMap.remove(player.uniqueId.toString()) ?: return
+
+        remove(player)
+    }
+
+    fun toggleBoard(player: Player) {
+        if (!hasBoard(player)) {
+            addBoard(player)
+        } else {
+            removeBoard(player)
+        }
+    }
+
+    fun updateBoard(player: Player) {
+        val boardConfig = ChemdahPlayerUtil(player).getScoreBoardSetting()
+        buildBoard(player, boardConfig)
+        update(player)
+    }
+
     class PacketEventsBoard(val player: Player, val board: ScoreBoard) {
 
         val identifier = player.name.substring(0, 16)
@@ -126,5 +196,6 @@ class ScoreboardUtil {
         fun sendPacket(player: Player, wrapper: PacketWrapper<*>) {
             PacketEvents.getAPI().playerManager.sendPacket(player, wrapper)
         }
+
     }
 }

@@ -3,8 +3,8 @@ features:
   # 为 Chemdah 启用 FancyNPC 支持
   fancynpc-support: false
 
-# 占位符更新周期，重启生效
-placeholder-update: 40
+  # 启用 ChoTenChem 提供的计分板
+  scoreboard: false
 
 # ChoTenChem 提供的追踪计分板
 # 使用时请禁用原版任务追踪的计分板选项，你可以使用VSCode批量替换启用计分板的选项
@@ -22,14 +22,21 @@ scoreboard:
         &6任务计分板
         &7
 
-    - type: tasks
+    - type: task
 
-      # maximum: 4 - 限制最多插入4条
+      # maximum: 4 - 限制最多插入4条任务
 
       # 过滤器，不填默认all
-      # all - 不予过滤
-      # smart - 智能任务解析，优先展示未完成的任务
-      # progress_only - 只展示进行中的任务
+      # all - 不予过滤，例如：
+      # 任务1 - 已完成
+      # 任务2 - 已完成
+      # 任务3 - 未完成
+      # smart - 智能任务解析，优先展示未完成的任务，例如：
+      # 任务3 - 未完成
+      # 任务1 - 已完成
+      # 任务2 - 已完成
+      # progress - 只展示进行中的任务，例如：
+      # 任务3 - 未完成
       filter: all
 
       completed: "&7{meta:name} - &a已完成"
@@ -44,25 +51,56 @@ placeholders:
 
   # 任务解析
   # %chotenchem_task_任务名称_子任务%
+  # 任务名使用TRACKING代表使用追踪中的任务
   # 例如 %chotenchem_task_ILoveChoTenChan_taskaaa%
   task:
+    filter: all
     completed: "&7{meta:name} - &a已完成"
     in-progress: "&7{meta:name} - &e{progress:value}/{progress:target},{progress:percent}%"
     no-progress: "&7{meta:name} - &c未开始"
 
   # 智能任务解析
-  # %chotenchem_smart-task_任务名称_当前项%
+  # %chotenchem_smart-task_任务名称_当前项%，当前项必须为数字类型
+  # 任务名使用TRACKING代表使用追踪中的任务
   # 例如 %chotenchem_smart-task_ILoveChoTenChan_1%
   #
   # 该选项在展示非 Chemdah 提供的计分板时非常有用。
   # 尤其是您希望将任务限制在部分计分板内的时候。
   # 示例如下:
   # 任务ILoveChoTenChan中，子任务1和3已完成，2正在进行，4还没有进展，那么展示的就是：
-  # %chotenchem_smart-task_ILoveChoTenChan_1% -} &7子任务1名称 - &a已完成
-  # %chotenchem_smart-task_ILoveChoTenChan_2% -} &7子任务3名称 - &a已完成
-  # %chotenchem_smart-task_ILoveChoTenChan_3% -} &7子任务2名称 - &e1/5,20%
-  # %chotenchem_smart-task_ILoveChoTenChan_4% -} &7子任务4名称 - &c未开始
+  # %chotenchem_smart-task_ILoveChoTenChan_1% -> &7子任务1名称 - &a已完成
+  # %chotenchem_smart-task_ILoveChoTenChan_2% -> &7子任务3名称 - &a已完成
+  # %chotenchem_smart-task_ILoveChoTenChan_3% -> &7子任务2名称 - &e1/5,20%
+  # %chotenchem_smart-task_ILoveChoTenChan_4% -> &7子任务4名称 - &c未开始
   smart-task:
+    filter: smart
+    completed: "&7{meta:name} - &a已完成"
+    in-progress: "&7{meta:name} - &e{progress:value}/{progress:target},{progress:percent}%"
+    no-progress: "&7{meta:name} - &c未开始"
+
+  # 未完成的任务解析
+  # %chotenchem_task_任务名称_当前项%，当前项必须为数字类型
+  # 任务名使用TRACKING代表使用追踪中的任务
+  # 示例如下:
+  # 任务ILoveChoTenChan中，子任务1和3已完成，2正在进行，4还没有进展，那么展示的就是：
+  # %chotenchem_uncompleted-task_ILoveChoTenChan_1% -> &7子任务2名称 - &e1/5,20%
+  # %chotenchem_uncompleted-task_ILoveChoTenChan_2% -> &7子任务4名称 - &c未开始&7子任务3名称 - &a已完成
+  # %chotenchem_uncompleted-task_ILoveChoTenChan_3% -> (空字符串)
+  # %chotenchem_uncompleted-task_ILoveChoTenChan_4% -> (空字符串)
+  uncompleted-task:
+    filter: progress
+    completed: " "
+    in-progress: "&7{meta:name} - &e{progress:value}/{progress:target},{progress:percent}%"
+    no-progress: "&7{meta:name} - &c未开始"
+
+
+  # 自定义的任务解析
+  # 允许自定义任务的其他格式
+  # %chotenchem_<自定义名>_任务名称_子任务%
+  # 任务名使用TRACKING代表使用追踪中的任务
+  # 例如 %chotenchem_custom-task_ILoveChoTenChan_taskaaa%
+  custom-task:
+    filter: all
     completed: "&7{meta:name} - &a已完成"
     in-progress: "&7{meta:name} - &e{progress:value}/{progress:target},{progress:percent}%"
     no-progress: "&7{meta:name} - &c未开始"
