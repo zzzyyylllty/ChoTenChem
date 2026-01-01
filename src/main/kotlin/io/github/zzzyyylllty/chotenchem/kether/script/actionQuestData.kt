@@ -1,6 +1,7 @@
 package io.github.zzzyyylllty.chotenchem.kether.script
 
 import ink.ptms.chemdah.api.ChemdahAPI.conversationSession
+import ink.ptms.chemdah.core.conversation.Session
 import ink.ptms.chemdah.core.quest.QuestContainer
 import ink.ptms.chemdah.taboolib.library.kether.ParsedAction
 import ink.ptms.chemdah.util.getQuestContainer
@@ -16,17 +17,38 @@ import taboolib.module.kether.script
 import java.util.concurrent.CompletableFuture
 import kotlin.math.abs
 
-@KetherParser(["quest-data"], shared = true, namespace = "chemdah-quest")
-fun actionQuestData() = combinationParser {
-    it.group(text()).apply(it) { str ->
-        now {
-            val container = variables().get<Any?>("@QuestContainer").orElse(null) as? QuestContainer ?: error("No quest container selected.")
-            return@now when (str.lowercase()) {
+class ActionQuestData(val str: String) : ScriptAction<Any?>() {
+
+    override fun run(frame: ScriptFrame): CompletableFuture<Any?> {
+        val container = frame.variables().get<Any?>("@QuestContainer").orElse(null) as? QuestContainer ?: error("No quest container selected.")
+        val content = when (str.lowercase()) {
                 "id" -> container.id
                 "node" -> container.node
                 "path" -> container.path
                 else -> null
             }
+        return CompletableFuture.completedFuture(content)
+    }
+
+    companion object {
+
+        @KetherParser(["quest-data"], shared = true, namespace = "chemdah-quest")
+        fun parser() = scriptParser {
+            ActionQuestData(it.nextToken())
         }
     }
 }
+//@KetherParser(["quest-data"], shared = true, namespace = "chemdah-quest")
+//fun actionQuestData() = scriptParser {
+//    it.group(text()).apply(it) { str ->
+//        now {
+//            val container = variables().get<Any?>("@QuestContainer").orElse(null) as? QuestContainer ?: error("No quest container selected.")
+//            return@now when (str.lowercase()) {
+//                "id" -> container.id
+//                "node" -> container.node
+//                "path" -> container.path
+//                else -> null
+//            }
+//        }
+//    }
+//}

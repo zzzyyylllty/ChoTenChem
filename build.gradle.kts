@@ -64,7 +64,6 @@ taboolib {
     // relocate("de.tr7zw.changeme.nbtapi","io.github.zzzyyylllty.chotenchem.library.nbtapi")
     relocate("io.github.projectunified.uniitem","io.github.zzzyyylllty.chotenchem.library.uniitem")
     relocate("com.fasterxml.jackson","io.github.zzzyyylllty.chotenchem.library.jackson")
-    relocate("com.mojang.datafixers","io.github.zzzyyylllty.chotenchem.library.datafixers")
     relocate("io.netty.handler.codec.http", "io.github.zzzyyylllty.chotenchem.library.http")
     relocate("io.netty.handler.codec.rtsp", "io.github.zzzyyylllty.chotenchem.library.rtsp")
     relocate("io.netty.handler.codec.spdy", "io.github.zzzyyylllty.chotenchem.library.spdy")
