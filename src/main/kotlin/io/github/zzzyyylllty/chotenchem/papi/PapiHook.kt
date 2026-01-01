@@ -20,7 +20,7 @@ object ExamplePapiHook : PlaceholderExpansion {
 
         var list = args.split("_")
 
-        val key = list[0].toLowerCase()
+        val key = list[0].lowercase()
 
         when (key) {
             "questmeta" -> {
