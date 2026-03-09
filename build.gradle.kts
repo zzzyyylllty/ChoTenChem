@@ -126,3 +126,10 @@ dependencies {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
+
+kotlin {
+    jvmToolchain(21)
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+    }
+}
