@@ -18,77 +18,143 @@ import ink.ptms.chemdah.core.quest.Task
 import ink.ptms.chemdah.core.quest.objective.Objective
 import ink.ptms.chemdah.module.level.LevelOption
 import ink.ptms.chemdah.module.scenes.ScenesBlockData
-import taboolib.platform.type.BukkitProxyEvent
+import org.bukkit.Bukkit
+import org.bukkit.event.Cancellable
+import org.bukkit.event.Event
+import org.bukkit.event.HandlerList
+import org.bukkit.metadata.MetadataValue
+import org.bukkit.metadata.Metadatable
+import org.bukkit.plugin.Plugin
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.set
 
+@Suppress("SameReturnValue")
+open class ChoTenProxyEvent : Event(!Bukkit.isPrimaryThread()), Cancellable, Metadatable {
+
+    private var isCancelled = false
+
+    open val allowCancelled: Boolean
+        get() = true
+
+    override fun getHandlers(): HandlerList {
+        return getHandlerList()
+    }
+
+    override fun isCancelled(): Boolean {
+        return isCancelled
+    }
+
+    override fun setCancelled(value: Boolean) {
+        if (allowCancelled) {
+            isCancelled = value
+        } else {
+            throw IllegalArgumentException("This event cannot be cancelled.")
+        }
+    }
+
+    fun call(): Boolean {
+        Bukkit.getPluginManager().callEvent(this)
+        return !isCancelled
+    }
+
+    val metadataMap = ConcurrentHashMap<String, MetadataValue>()
+
+    override fun setMetadata(key: String, value: MetadataValue) {
+        metadataMap[key] = value
+    }
+
+    override fun getMetadata(key: String): MutableList<MetadataValue> {
+        return metadataMap[key]?.let { mutableListOf(it) } ?: mutableListOf()
+    }
+
+    override fun hasMetadata(key: String): Boolean {
+        return metadataMap.containsKey(key)
+    }
+
+    override fun removeMetadata(key: String, plugin: Plugin) {
+        metadataMap.remove(key)
+    }
+
+    companion object {
+
+        @JvmField
+        val handlers = HandlerList()
+
+        @JvmStatic
+        fun getHandlerList(): HandlerList {
+            return handlers
+        }
+    }
+}
 
 // --- Agent ---
-class CheProxyAgent(val questContainer: QuestContainer, val playerProfile: PlayerProfile, val agentType: AgentType, val restrict: String) : BukkitProxyEvent()
+class CheProxyAgent(val questContainer: QuestContainer, val playerProfile: PlayerProfile, val agentType: AgentType, val restrict: String) : ChoTenProxyEvent()
 
 // --- Accept ---
-class CheProxyAcceptPre(val quest: Template, val playerProfile: PlayerProfile, var reason: String?) : BukkitProxyEvent()
-class CheProxyAcceptPost(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
+class CheProxyAcceptPre(val quest: Template, val playerProfile: PlayerProfile, var reason: String?) : ChoTenProxyEvent()
+class CheProxyAcceptPost(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
 
 // --- Fail ---
-class CheProxyFailPre(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyFailPost(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
+class CheProxyFailPre(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyFailPost(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
 
 // --- Restart ---
-class CheProxyRestartPre(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyRestartPost(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
+class CheProxyRestartPre(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyRestartPost(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
 
 // --- Complete ---
-class CheProxyCompletePre(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyCompletePost(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
+class CheProxyCompletePre(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyCompletePost(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
 
 // --- Registration ---
-class CheProxyRegistered(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyUnregistered(val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
+class CheProxyRegistered(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyUnregistered(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
 
 // --- Scoreboard ---
-class CheProxyScoreboardTrack(val content: MutableList<String>, val playerProfile: PlayerProfile) : BukkitProxyEvent()
+class CheProxyScoreboardTrack(val content: MutableList<String>, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
 
 // --- DataSet ---
-class CheProxyDataSetPre(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String, var value: Data) : BukkitProxyEvent()
-class CheProxyDataSetPost(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String, val value: Data) : BukkitProxyEvent()
+class CheProxyDataSetPre(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String, var value: Data) : ChoTenProxyEvent()
+class CheProxyDataSetPost(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String, val value: Data) : ChoTenProxyEvent()
 
 // --- DataRemove ---
-class CheProxyDataRemovePre(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String) : BukkitProxyEvent()
-class CheProxyDataRemovePost(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String) : BukkitProxyEvent()
+class CheProxyDataRemovePre(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String) : ChoTenProxyEvent()
+class CheProxyDataRemovePost(val player: Player, val playerProfile: PlayerProfile, val quest: Quest, val dataContainer: DataContainer, val key: String) : ChoTenProxyEvent()
 
 // --- Objective Events ---
-class CheProxyObjectiveContinuePre(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyObjectiveContinuePost(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyObjectiveCompletePre(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyObjectiveCompletePost(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyObjectiveRestartPre(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyObjectiveRestartPost(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : BukkitProxyEvent()
+class CheProxyObjectiveContinuePre(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyObjectiveContinuePost(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyObjectiveCompletePre(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyObjectiveCompletePost(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyObjectiveRestartPre(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyObjectiveRestartPost(val objective: Objective<*>, val task: Task, val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
 
 // --- Conversation Events ---
-class CheProxyConvSelectReply(val player: Player, val session: Session, val reply: PlayerReply) : BukkitProxyEvent()
-class CheProxyConvPre(val conversation: Conversation, val session: Session, val relay: Boolean) : BukkitProxyEvent()
-class CheProxyConvPost(val conversation: Conversation, val session: Session, val relay: Boolean) : BukkitProxyEvent()
-class CheProxyConvBegin(val conversation: Conversation, val session: Session, val relay: Boolean) : BukkitProxyEvent()
-class CheProxyConvCancelled(val conversation: Conversation, val session: Session, val relay: Boolean) : BukkitProxyEvent()
-class CheProxyConvClose(val session: Session, val refuse: Boolean) : BukkitProxyEvent() { val conversation = session.conversation }
-class CheProxyConvClosed(val session: Session, val refuse: Boolean) : BukkitProxyEvent() { val conversation = session.conversation }
-class CheProxyConvReplyClosed(val session: Session) : BukkitProxyEvent() { val conversation = session.conversation }
+class CheProxyConvSelectReply(val player: Player, val session: Session, val reply: PlayerReply) : ChoTenProxyEvent()
+class CheProxyConvPre(val conversation: Conversation, val session: Session, val relay: Boolean) : ChoTenProxyEvent()
+class CheProxyConvPost(val conversation: Conversation, val session: Session, val relay: Boolean) : ChoTenProxyEvent()
+class CheProxyConvBegin(val conversation: Conversation, val session: Session, val relay: Boolean) : ChoTenProxyEvent()
+class CheProxyConvCancelled(val conversation: Conversation, val session: Session, val relay: Boolean) : ChoTenProxyEvent()
+class CheProxyConvClose(val session: Session, val refuse: Boolean) : ChoTenProxyEvent() { val conversation = session.conversation }
+class CheProxyConvClosed(val session: Session, val refuse: Boolean) : ChoTenProxyEvent() { val conversation = session.conversation }
+class CheProxyConvReplyClosed(val session: Session) : ChoTenProxyEvent() { val conversation = session.conversation }
 
 // --- Player Events ---
-class CheProxyPlayerSelected(val player: Player, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyPlayerReleased(val player: Player) : BukkitProxyEvent() {
+class CheProxyPlayerSelected(val player: Player, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyPlayerReleased(val player: Player) : ChoTenProxyEvent() {
     val awaitList = arrayListOf<CompletableFuture<*>>()
     fun await(runnable: Runnable) { awaitList += CompletableFuture.runAsync { try { runnable.run() } catch (ex: Throwable) { ex.printStackTrace() } } }
 }
-class CheProxyPlayerUpdated(val player: Player, val playerProfile: PlayerProfile) : BukkitProxyEvent()
-class CheProxyPlayerTrack(val player: Player, val playerProfile: PlayerProfile, val trackingQuest: Template?, val cancel: Boolean) : BukkitProxyEvent()
-class CheProxyPlayerLevelChange(val player: Player, val option: LevelOption, val oldLevel: Int, val oldExperience: Int, var newLevel: Int, var newExperience: Int) : BukkitProxyEvent()
-class CheProxyPlayerScenesBlockBreak(val player: Player, val blockData: ScenesBlockData) : BukkitProxyEvent()
-class CheProxyPlayerScenesBlockInteract(val player: Player, val blockData: ScenesBlockData) : BukkitProxyEvent()
-class CheProxyPlayerDataSetPre(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String, var value: Data) : BukkitProxyEvent()
-class CheProxyPlayerDataSetPost(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String, val value: Data) : BukkitProxyEvent()
-class CheProxyPlayerDataRemovePre(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String) : BukkitProxyEvent()
-class CheProxyPlayerDataRemovePost(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String) : BukkitProxyEvent()
+class CheProxyPlayerUpdated(val player: Player, val playerProfile: PlayerProfile) : ChoTenProxyEvent()
+class CheProxyPlayerTrack(val player: Player, val playerProfile: PlayerProfile, val trackingQuest: Template?, val cancel: Boolean) : ChoTenProxyEvent()
+class CheProxyPlayerLevelChange(val player: Player, val option: LevelOption, val oldLevel: Int, val oldExperience: Int, var newLevel: Int, var newExperience: Int) : ChoTenProxyEvent()
+class CheProxyPlayerScenesBlockBreak(val player: Player, val blockData: ScenesBlockData) : ChoTenProxyEvent()
+class CheProxyPlayerScenesBlockInteract(val player: Player, val blockData: ScenesBlockData) : ChoTenProxyEvent()
+class CheProxyPlayerDataSetPre(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String, var value: Data) : ChoTenProxyEvent()
+class CheProxyPlayerDataSetPost(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String, val value: Data) : ChoTenProxyEvent()
+class CheProxyPlayerDataRemovePre(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String) : ChoTenProxyEvent()
+class CheProxyPlayerDataRemovePost(val player: Player, val playerProfile: PlayerProfile, val dataContainer: DataContainer, val key: String) : ChoTenProxyEvent()
 
 object ChoTenChemListener {
 
