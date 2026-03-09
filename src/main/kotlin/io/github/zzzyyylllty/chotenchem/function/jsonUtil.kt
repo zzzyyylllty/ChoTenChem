@@ -2,9 +2,6 @@ package io.github.zzzyyylllty.chotenchem.function
 
 
 import com.google.gson.GsonBuilder
-import net.kyori.adventure.text.minimessage.MiniMessage
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 
 
 val jsonUtils = GsonBuilder()
@@ -17,7 +14,7 @@ val jsonUtils = GsonBuilder()
     .create()
 
 
-fun Any?.asListEnhanded() : List<String>? {
+fun Any?.asListEnhanced() : List<String>? {
     if (this == null) return null
     val thisList = if (this is List<*>) this else listOf(this)
     val list = mutableListOf<String>()
@@ -30,5 +27,5 @@ fun Any?.asListEnhanded() : List<String>? {
 }
 
 fun Any?.asListedStringEnhanded() : String? {
-    return this.asListEnhanded()?.joinToString("\n")
+    return this.asListEnhanced()?.joinToString("\n")
 }

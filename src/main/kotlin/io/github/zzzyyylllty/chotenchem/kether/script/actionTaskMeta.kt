@@ -16,19 +16,15 @@ class ActionMeta(val str: taboolib.library.kether.ParsedAction<*>?) : ScriptActi
     override fun run(frame: ScriptFrame): CompletableFuture<Any?> {
         val container = frame.variables().get<Any?>("@QuestContainer").orElse(null) as? QuestContainer ?: error("No quest container selected.")
 
-        return frame.newFrame(str!!).run<Any>().thenApply {
+        return frame.newFrame(str!!).run<Any?>().thenApply {
             val str = str.toString()
-            val future = CompletableFuture<Any>()
-            future.complete(
-                if (container is Task) {
+            return@thenApply if (container is Task) {
                     container.metaMap[str]?.source
                 } else {
-                    val profile =
-                        ChemdahAPI.playerProfile[frame.player().name] ?: return@thenApply CompletableFuture.completedFuture(null)
-                    val quest = container.getQuest(profile) ?: return@thenApply CompletableFuture.completedFuture(null)
+                    val profile = ChemdahAPI.playerProfile[frame.player().name] ?: return@thenApply null
+                    val quest = container.getQuest(profile) ?: return@thenApply null
                     quest.template.metaMap[str]
                 }
-            )
         }
     }
 

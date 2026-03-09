@@ -81,5 +81,4 @@ object ChoTenDebugCommand {
             sender.sendComponent(papiSetting.value.toString())
         }
     }
-
 }

@@ -26,8 +26,7 @@ class ActionQuestMeta(val str: taboolib.library.kether.ParsedAction<*>?) : Scrip
 
         return frame.newFrame(str!!).run<Any>().thenApply {
             val str = str.toString()
-            val future = CompletableFuture<Any>()
-            future.complete(container.metaMap[str]?.source)
+            return@thenApply container.metaMap[str]?.source
         }
     }
 

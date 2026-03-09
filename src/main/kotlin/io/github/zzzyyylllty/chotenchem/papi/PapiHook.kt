@@ -11,7 +11,7 @@ import org.bukkit.entity.Player
 import taboolib.module.chat.colored
 import taboolib.platform.compat.PlaceholderExpansion
 
-object ExamplePapiHook : PlaceholderExpansion {
+object ChoTenChemPapiHook : PlaceholderExpansion {
 
     override val identifier: String = "chotenchem"
 

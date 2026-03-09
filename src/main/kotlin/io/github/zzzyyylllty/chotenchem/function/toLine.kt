@@ -12,7 +12,7 @@ fun List<Map<String, String?>?>.toLines(): List<Line> {
         if (it != null) {
             val line = when (it["type"]) {
                 "text" -> {
-                    it["content"].asListEnhanded()?.let { content ->
+                    it["content"].asListEnhanced()?.let { content ->
                         lines.add(
                             TextLine(
                                 type = "text",
@@ -29,9 +29,9 @@ fun List<Map<String, String?>?>.toLines(): List<Line> {
                             maximum = it["maximum"]?.toIntOrNull(),
                             filter = Filter.valueOf((it["filter"] ?: "ALL").uppercase()),
                             text = TaskStatText(
-                                it["completed"].asListEnhanded() ?: emptyList(),
-                                it["in-progress"].asListEnhanded() ?: emptyList(),
-                                it["no-progress"].asListEnhanded() ?: emptyList(),
+                                it["completed"].asListEnhanced() ?: emptyList(),
+                                it["in-progress"].asListEnhanced() ?: emptyList(),
+                                it["no-progress"].asListEnhanced() ?: emptyList(),
                             )
                         )
                     )

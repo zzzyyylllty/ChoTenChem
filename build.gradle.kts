@@ -51,6 +51,10 @@ taboolib {
         contributors {
             name("AkaCandyKAngel")
         }
+
+        dependencies {
+            name("Chemdah")
+        }
     }
     version {
         taboolib = "6.2.3-20d868d"
@@ -114,7 +118,7 @@ dependencies {
     implementation("net.kyori:adventure-text-minimessage:4.19.0")
     compileOnly("com.google.code.gson:gson:2.10.1")
     compileOnly("ink.ptms.chemdah:api:1.1.17")
-    // compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT") { isTransitive = false }
+     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT") { isTransitive = false }
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }
