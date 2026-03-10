@@ -25,6 +25,7 @@ import org.bukkit.event.HandlerList
 import org.bukkit.metadata.MetadataValue
 import org.bukkit.metadata.Metadatable
 import org.bukkit.plugin.Plugin
+import taboolib.platform.type.BukkitProxyEvent
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.set
@@ -84,6 +85,26 @@ open class ChoTenProxyEvent : Event(!Bukkit.isPrimaryThread()), Cancellable, Met
         @JvmStatic
         fun getHandlerList(): HandlerList {
             return handlers
+        }
+    }
+}
+
+class TestEvent {
+
+    /**
+     * 当任务接受时
+     */
+    class Accept {
+
+        class Pre(val quest: Template, val playerProfile: PlayerProfile, var reason: String?) : ChoTenProxyEvent() {
+
+            constructor(quest: Template, playerProfile: PlayerProfile) : this(quest, playerProfile, null)
+        }
+
+        class Post(val quest: Quest, val playerProfile: PlayerProfile) : ChoTenProxyEvent() {
+
+            override val allowCancelled: Boolean
+                get() = false
         }
     }
 }
